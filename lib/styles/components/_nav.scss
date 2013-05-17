@@ -1,0 +1,181 @@
+/*-------------------------------------------
+    Navigational Elements
+
+    Table of Contents:
+
+    1. Breadcrumbs
+    2. Sidenav
+    3. Pagination
+
+-------------------------------------------*/
+
+
+/* ==========================================================================
+	! 1.  Breadcrumbs
+	========================================================================== */
+
+	.breadcrumbs {
+	  display: block;
+	  padding: 0.375em 0.875em 0.7625em .4em;
+	  margin-left: 0;
+	  list-style: none;
+	  li {
+	    margin: 0;
+	    padding: 0 0.5em 0 0;
+	    float: left;
+	    &:hover a, &:focus a {
+	      text-decoration: underline;
+	    }
+	    a, span {
+	      font-size: 0.6875em;
+	      padding-left: 0.5em;
+	      text-transform: uppercase;
+	      color: #999999;
+	      letter-spacing: 1px;
+	    }
+	    &.current {
+	      a {
+	        cursor: default;
+	        color: #333333;
+	        font-weight: bold;
+	      }
+	      &:hover a, &:focus a {
+	        text-decoration: none;
+	      }
+	    }
+	    &.unavailable {
+	      a, a:hover {
+	        color: #bbb;
+	      }
+	      &:hover a, a:focus {
+	        text-decoration: none;
+	        color: #999999;
+	        cursor: default;
+	      }
+	    }
+	    &:before {
+	      content: "/";
+	      color: #ddd;
+	      position: relative;
+	      top: 1px;
+	    }
+	    &:first-child {
+	      a, span {
+	        padding-left: 0;
+	      }
+	      &:before {
+	        content: "";
+	      }
+	    }
+	  }
+	}
+
+
+
+/* ==========================================================================
+	! 3.  Pagination
+	========================================================================== */
+
+	.pagination {
+	  display: block;
+	  height: 1.5em;
+	  margin-left: -0.3125em;
+	  li {
+	    display: block;
+	    float: left;
+	    height: 1.5em;
+	    color: #222222;
+	    font-size: 0.875em;
+	    margin-left: 0.3125em;
+	    a {
+	      display: block;
+	      padding: 0.0625em 0.4375em 0.0625em;
+	      color: #999999;
+	    }
+	    &:hover a, a:focus {
+	      background: #e6e6e6;
+	    }
+	    &.unavailable {
+	      a {
+	        cursor: default;
+	        color: #999999;
+	      }
+	      &:hover a, a:focus {
+	        background: transparent;
+	      }
+	    }
+	    &.current a {
+	      background: #2ba6cb;
+	      color: white;
+	      font-weight: bold;
+	      cursor: default;
+	      &:hover, &:focus {
+	        background: #2ba6cb;
+	      }
+	    }
+	  }
+	}
+
+	.pagination-centered {
+	  text-align: center;
+	  ul > li {
+	    float: none;
+	    display: inline-block;
+	  }
+	}
+
+
+
+/* ==========================================================================
+	! 4.  Sidenav
+	========================================================================== */
+
+	// Side Nav Variables
+	$side-nav-padding:           emCalc(14px) 0 !default;
+	$side-nav-list-type:         none !default;
+	$side-nav-list-position:     inside !default;
+	$side-nav-list-margin:       0 0 emCalc(7px) 0 !default;
+	$side-nav-link-color: $primary-color !default;
+	$side-nav-link-color-active: lighten(#000, 30%) !default;
+	$side-nav-font-size:         emCalc(14px) !default;
+	$side-nav-font-weight:       bold !default;
+	$side-nav-divider-size:      1px !default;
+	$side-nav-divider-style:     solid !default;
+	$side-nav-divider-color:     darken(#fff, 10%) !default;
+
+
+
+
+	// We use this to style the side-nav
+	@mixin side-nav($divider-color:$side-nav-divider-color, $font-size:$side-nav-font-size, $link-color:$side-nav-link-color) {
+	  display: block;
+	  margin: 0;
+	  padding: $side-nav-padding;
+	  list-style-type: $side-nav-list-type;
+	  list-style-position: $side-nav-list-position;
+
+	  li {
+	    margin: $side-nav-list-margin;
+	    font-size: $font-size;
+
+	    a {
+	      display: block;
+	      color: $link-color;
+	    }
+
+	    &.active a {
+	      color: $side-nav-link-color-active;
+	      font-weight: $side-nav-font-weight;
+	    }
+
+	    &.divider {
+	      border-top: $side-nav-divider-size $side-nav-divider-style;
+	      height: 0;
+	      padding: 0;
+	      list-style: none;
+	      border-top-color: $divider-color;
+	    }
+	  }
+	}
+
+  .side-nav { @include side-nav; }

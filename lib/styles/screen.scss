@@ -1,0 +1,66 @@
+// This file centralizes all your styles by imports all the other SASS components and modules.  The exported screen.css will have comments with the corresponding files and line numbers so you can debug.  The HTML file links to /lib/styles/css/screen.css.
+
+
+/* !  Your Base Styles
+   ------------------------------------------------------------------------------------------------------*/
+@import "compass";
+@import "sass";
+@import "normalize";
+
+
+/* !  Global Components: a robust UI library (based on ZURB's Foundation)
+   ------------------------------------------------------------------------------------------------------*/
+@import "components/base.scss";
+@import "components/block-grid.scss";
+@import "components/buttons";
+@import "components/callouts";
+@import "components/collapsers";
+@import "components/fancybox";
+@import "components/forms";
+@import "components/grid";
+@import "components/lists";
+@import "components/modal";
+@import "components/nav";
+@import "components/orbit";
+/* @import "components/progress-bar"; */
+@import "components/tables";
+@import "components/tooltips";
+@import "components/typography";
+@import "components/video";
+@import "components/visibility";
+
+
+
+/* !  Modules: Specific site elements.  Create new ones for additional templates or blocks of content.
+   ------------------------------------------------------------------------------------------------------*/
+/* EXAMPLE:
+@import "modules/header";
+@import "modules/footer";
+*/
+
+
+
+
+/* !  Protoyping  Styles: Specific site elements. Debugging and temporary files used only in development.  Delete when in production.
+   ------------------------------------------------------------------------------------------------------*/
+
+.debug {
+	background: rgba(255,0,0,0.2);
+}
+
+.debug2 {
+	border:1px solid red;
+}
+
+.debug3 {
+	background: rgba(255,0,0,0.2);
+	border:1px solid red;
+}
+
+.show_class *:after {
+	content: attr(class);
+}
+
+
+
+

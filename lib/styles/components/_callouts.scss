@@ -1,0 +1,184 @@
+/*-------------------------------------------
+    Callouts includes panel boxes with special styles, colored callouts to grab the users' attention, and alert boxes.
+
+    Table of Contents:
+
+    1. Panels
+    2. Callouts
+    3. Alert Boxes
+
+-------------------------------------------*/
+
+
+
+/* ==========================================================================
+	!  1. Panels
+========================================================================== */
+
+
+// We use these to control the background and border styles
+$panel-bg:              darken(#fff, 5%) !default;
+$panel-border-style:    solid !default;
+$panel-border-size:     1px !default;
+
+// We use this % to control how much we darken things on hover
+$panel-function-factor: 10% !default;
+$panel-border-color:    darken($panel-bg, $panel-function-factor) !default;
+
+// We use these to set default inner padding and bottom margin
+$panel-margin-bottom:   emCalc(20px) !default;
+$panel-padding:         emCalc(20px) !default;
+
+// We use these to set default font colors
+$panel-font-color:      #333 !default;
+$panel-font-color-alt:  #fff !default;
+
+
+// Panel Mixins
+
+@mixin panel($bg:$panel-bg, $padding:$panel-padding) {
+
+  @if $bg {
+    $bg-lightness: lightness($bg);
+
+    border-style: $panel-border-style;
+    border-width: $panel-border-size;
+    border-color: darken($bg, $panel-function-factor);
+    margin-bottom: $panel-margin-bottom;
+    padding: $padding;
+
+    background: $bg;
+
+    // We set the font color based on the darkness of the bg.
+    @if $bg-lightness >= 50% and $bg == blue { h1,h2,h3,h4,h5,h6,p { color: $panel-font-color-alt; } }
+    @else if $bg-lightness >= 50%            { h1,h2,h3,h4,h5,h6,p { color: $panel-font-color; } }
+    @else                                    { h1,h2,h3,h4,h5,h6,p { color: $panel-font-color-alt; } }
+
+    // Respect the padding, fool.
+    &>:first-child { margin-top: 0; }
+    &>:last-child { margin-bottom: 0; }
+
+    // reset header line-heights for panels
+    h1,h2,h3,h4,h5,h6 {
+      line-height: 1; margin-bottom: emCalc(20px) / 2;
+      &.subheader { line-height: 1.4; }
+    }
+  }
+}
+
+  /* Panels */
+  .panel { @include panel;
+
+    &.callout {
+      @include panel($primary-color);
+      @include box-shadow(0 1px 0 rgba(255, 255, 255, 0.5) inset);
+    }
+
+    &.radius {
+      @include panel($bg:false);
+    }
+
+  }
+
+
+
+/* ==========================================================================
+	!  2. Callouts
+========================================================================== */
+.callout {
+	@extend .panel;
+	border-style: solid;
+	border-width: 1px;
+	border-color: darken($primary_color,10%);
+	background: $primary_color;
+	@include box-shadow(0 1px 0 rgba(255, 255, 255, 0.5) inset);
+	color: #fff;
+	font-weight: bold;
+	text-shadow: 0 0 3px darken($primary_color,20%);
+}
+
+
+/* ==========================================================================
+	!  3. Alert Boxes
+
+	These handy panels can be closed by the user, collapsing and hiding the message or alert.
+	To use, just includes the data-alert attribute and add your class to style.
+
+   	Sample HTML:
+
+	   	<div data-alert class="alert-box">
+			<i class="ss-icon">info</i>
+			<strong>This is an information notification</strong><br/>
+			Warning!  You have built too many pylons!
+			<a href="#" class="close ss-icon">close</a>
+		</div>
+
+========================================================================== */
+
+.alert-box {
+	display: block;
+	margin-bottom: 1.25em;
+	padding: 0.6875em 1.3125em 0.75em 0.6875em;
+	@include border-radius(5px);
+	@include box-shadow(0 1px 0 0 rgba(255,255,255,0.5) inset);
+	font-weight: normal;
+	position: relative;
+	font-size: 0.9em;
+	border-width: 1px;
+	border-style: solid;
+	text-shadow: 0px 1px rgba(255,255,255,0.3);
+	min-height: 30px;
+	border-color: #69c0ca;
+	color: #31717a;
+	background-color: #8aced6;
+	@include background-image(linear-gradient(#99e2eb, #79c6cd));
+	i {
+		font-size: 1.5em;
+		display: block;
+		float: left;
+		padding-right: .7em;
+		padding-bottom: .5em;
+		height: 100%;
+		padding-top: 5px;
+	}
+	.close {
+		font-size: .9em;
+		padding: 5px 5px 4px 5px;
+		line-height: 1em;
+		position: absolute;
+		top: 0.4375em;
+		right: 0.3125em;
+		color: #333333;
+		@include opacity(.3);
+		text-shadow: 0 1px 0 #fff;
+		@include border-radius(2px);
+		@include single-transition();
+		&:hover {
+			@include opacity(.6);
+		}
+	}
+	&.success {
+		border-color: #accc5d;
+		color: #70892b;
+		background-color: #c8e185;
+		@include background-image(linear-gradient(#d0e98e, #c1da7f));
+	}
+	&.error_alert {
+		border-color: #dc4e4d;
+		color: #b52525;
+		background-color: #ec8282;
+		@include background-image(linear-gradient(#f48888, #e17575));
+	}
+	&.alert {
+		border-color: #e9c95f;
+		color: #ae8500;
+		background-color: #f3dc8f;
+		@include background-image(linear-gradient(#ffeaa7, #f3d573));
+	}
+	&.secondary {
+		border-color: #CCC;
+		color: #666;
+		background-color: #e8e8e8;
+		@include background-image(linear-gradient(#f4f4f4, #e0e0e0));
+	}
+}

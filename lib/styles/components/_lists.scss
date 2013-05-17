@@ -1,0 +1,117 @@
+/*-------------------------------------------
+   	Lists!!!!
+
+   	Table of Contents:
+
+   	1. Normalized Styles
+   	2. Inline Lists
+   	3. Special Types
+
+-------------------------------------------*/
+
+
+/* ==========================================================================
+	!  1. Normalized Styles
+	========================================================================== */
+
+ul, ol, dl {
+	font-size: 1em;
+	line-height: 1.6;
+	margin-bottom: 1.25em;
+	list-style-position: outside;
+	font-family: inherit;
+}
+
+
+/* Unordered.  Special classes: square, circle, disc, no-bullet */
+	ul {
+		margin-left: 2.125em;
+		li {
+			margin-bottom: .25em;
+			ul, ol {
+				  margin-top: .25em;
+				  margin-left: 1.125em;
+				  margin-bottom: 0;
+				  font-size: 1em;
+			}
+		}
+		&.square, &.circle, &.disc {
+			margin-left: 1.125em;
+		}
+		&.square li ul, &.circle li ul, &.disc li ul {
+			list-style: inherit;
+		}
+		&.square {
+			list-style-type: square;
+		}
+		&.circle {
+			list-style-type: circle;
+		}
+		&.disc {
+			list-style-type: disc;
+		}
+		&.no-bullet {
+			list-style: none;
+		}
+	}
+
+/* Ordered */
+	ol {
+		margin-left: 2.125em;
+		li {
+			margin-bottom: .25em;
+			ul, ol {
+				margin-top: .25em;
+				margin-left: 1.125em;
+				margin-bottom: 0;
+			}
+		}
+	}
+
+/* Definition Lists */
+	dl {
+		dt {
+			margin-bottom: 0.3em;
+			font-weight: bold;
+		}
+		dd {
+			margin-bottom: 0.75em;
+		}
+	}
+
+/* Navigation */
+	nav ul {
+		margin: 0;
+		li {
+			list-style: none;
+		}
+	}
+
+
+
+/* ==========================================================================
+	!  2. Inline Lists: floats li items
+	========================================================================== */
+
+	.inline-list {
+		margin: 0 0 1.0625em -1.375em;
+		padding: 0;
+		list-style: none;
+		overflow: hidden;
+		> li {
+			list-style: none;
+			float: left;
+			margin-left: 1.375em;
+			display: block;
+			> * {
+				display: block;
+			}
+		}
+	}
+
+
+
+/* ==========================================================================
+	!  3. Special Types
+	========================================================================== */
+

@@ -1,0 +1,226 @@
+/*-------------------------------------------
+   	The amazinglyton grid.
+
+   	Table of Contents:
+
+   	1. Your Variables
+   	2. All the math :)
+
+
+   	HOW TO USE:
+
+   	To understand the Foundation 4 Grid, you must first know that it:
+   		* Uses a 12 base (you combine numbers to equal 12, like 6+6 or 4+4+4 or 2+3+6+1
+   		* Can be nested inside of eachother (columns are % based and will calculate to the parent container)
+   		* Is mobile-friendly to the extreme (large columns will be full width on small screens instead of squeezed)
+
+   	Class names begin with either 'small-' or 'large-', followed by a number.  It's best explained with some examples:
+
+	   		class="large-3 columns"					:	25% width on larger screens, but when on small screens (phones), will become 100%
+	   		class="small-3 columns"					:	25% width on BOTH large and small screens
+	   		class="small-3 large-6 columns"		: 	50% width on large screen, 25% on small
+
+	Got it?  Good.  Here are some more special ways to work with the columns:
+
+			class="small-offset-3 columns" 		:	offsets the item by 3 columns, creating additional space between columns
+   			class="small-3 small-centered columns"		:	centers columns  in the middle of a row
+
+   	The push- and pull- classes will change the source order.  Good for mobile-friendly sidebars.
+
+			<div class="small-2 push-10 columns">Apples</div>			: 		On small mobile screens, appears first on the left.  On large screens, appears on the right side.
+			<div class="small-10 pull-2 columns">Bananas</div>			:		On small mobile screens, appears last on the right.  On large screens, appears on the left side.
+
+
+-------------------------------------------*/
+
+
+/* ==========================================================================
+	!  1. Variables: The ONLY thing you should be touching in this file.  Make the page wider or add more gutter space.
+	========================================================================== */
+
+	$row-width:     emCalc(1060px) !default;
+	$column-gutter: emCalc(30px) !default;
+	$total-columns: 12 !default;
+
+
+
+/* ==========================================================================
+	!  2. All the math.  Don't worry your pretty head about the metrics of the grid.  Just believe in it and it will work.
+	========================================================================== */
+
+
+
+//
+// Grid Function
+//
+
+@function gridCalc($colNumber, $totalColumns) {
+  @return percentage(($colNumber / $totalColumns));
+}
+
+//
+// Grid Mixins
+//
+
+// For creating container, nested, and collapsed rows.
+@mixin grid-row($behavior: false) {
+
+  // use @include grid-row(nest); to include a nested row
+  @if $behavior == nest {
+    width: auto;
+    margin-left: -($column-gutter/2);
+    margin-right: -($column-gutter/2);
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: none;
+  }
+
+  // use @include grid-row(collapse); to collapsed a container row margins
+  @else if $behavior == collapse {
+    width: 100%;
+    margin: 0;
+    max-width: $row-width;
+  }
+
+  // use @include grid-row(nest-collapse); to collapse outer margins on a nested row
+  @else if $behavior == nest-collapse {
+    width: auto;
+    margin: 0;
+    max-width: none;
+  }
+
+  // use @include grid-row; to use a container row
+  @else {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: $row-width;
+  }
+
+  // Clearfix for all rows
+  @include clearfix();
+
+}
+
+
+// For creating columns - @include these inside a media query to control small vs. large grid layouts
+@mixin grid-column($columns:false, $last-column:false, $center:false, $offset:false, $push:false, $pull:false, $collapse:false, $float:true) {
+
+  position: relative;
+
+  // If collapsed, get rid of gutter padding
+  @if $collapse {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  // Gutter padding whenever a column isn't set to collapse
+  // (use $collapse:null to do nothing)
+  @else if $collapse == false {
+    padding-left: $column-gutter / 2;
+    padding-right: $column-gutter / 2;
+  }
+
+  // If a column number is given, calculate width
+  @if $columns {
+    width: gridCalc($columns, $total-columns);
+
+    // If last column, float naturally instead of to the right
+    @if $last-column { float: right; }
+  }
+
+  // If offset, calculate appropriate margins
+  @if $offset { margin-left: gridCalc($offset, $total-columns); }
+
+  // Source Ordering, adds left/right depending on which you use.
+  @if $push { left: gridCalc($push, $total-columns); right: auto; }
+  @if $pull { right: gridCalc($pull, $total-columns); left: auto; }
+
+  // If centered, get rid of float and add appropriate margins
+  @if $center {
+    margin-left: auto;
+    margin-right: auto;
+    float: none !important;
+  }
+
+  @if $float {
+    @if $float == left or $float == true { float: left; }
+    @else if $float == right { float: right; }
+    @else { float: none; }
+  }
+
+}
+
+
+	/* Grid HTML Classes */
+  .row {
+    @include grid-row;
+
+    &.collapse {
+      .column,
+      .columns { @include grid-column($collapse:true); }
+    }
+
+    .row { @include grid-row($behavior:nest);
+      &.collapse { @include grid-row($behavior:nest-collapse); }
+    }
+  }
+
+  .column,
+  .columns { @include grid-column($columns:$total-columns); }
+
+  @media only screen {
+
+    .column,
+    .columns { @include grid-column($columns:false); }
+
+    @for $i from 1 through $total-columns {
+      .small#{-$i} { @include grid-column($columns:$i,$collapse:null,$float:false); }
+    }
+
+    @for $i from 0 through $total-columns - 2 {
+      .small-offset-#{$i} { @include grid-column($offset:$i, $collapse:null,$float:false); }
+    }
+
+    [class*="column"] + [class*="column"]:last-child { float: right; }
+    [class*="column"] + [class*="column"].end { float: left; }
+
+    .column.small-centered,
+    .columns.small-centered { @include grid-column($center:true, $collapse:null, $float:false); }
+  }
+
+  /* Styles for screens that are atleast 768px; */
+  @media #{$small} {
+
+    @for $i from 1 through $total-columns {
+      .large#{-$i} { @include grid-column($columns:$i,$collapse:null,$float:false); }
+    }
+
+    @for $i from 0 through $total-columns - 1 {
+      .row .large-offset-#{$i} { @include grid-column($offset:$i, $collapse:null,$float:false); }
+    }
+
+    @for $i from 1 through $total-columns - 1 {
+      .push#{-$i} { @include grid-column($push:$i, $collapse:null, $float:false); }
+      .pull#{-$i} { @include grid-column($pull:$i, $collapse:null, $float:false); }
+    }
+
+    .column.large-centered,
+    .columns.large-centered { @include grid-column($center:true, $collapse:null, $float:false); }
+
+    .column.large-uncentered,
+    .columns.large-uncentered {
+      margin-left: 0;
+      margin-right: 0;
+      float: left !important;
+    }
+
+    .column.large-uncentered.opposite,
+    .columns.large-uncentered.opposite {
+      float: right !important;
+    }
+
+
+  }

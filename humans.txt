@@ -1,0 +1,36 @@
+/*  This site was designed and developed by Adpearance, a digitial marketing agency based in Portland, Oregon  */
+
+
+/* SITE */
+
+	Components:	Foundation 4 (ZURB), jQuery, SASS
+	CMS:					ExpressionEngine
+	Last update:		May 14, 2013
+
+
+
+/* TEAM */
+
+	Boilerplate Design: Ren Walker
+	Site: renwalker.com
+	Twitter: @renbyrd
+
+	Developer: <name>
+	Contact:
+
+	Designer: <name>
+	Contact:
+
+	Project Manager: <name>
+	Contact:
+
+
+
+/* THANKS */
+
+	<name>
+	<name>
+	<name>
+
+
+

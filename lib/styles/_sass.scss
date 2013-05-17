@@ -1,0 +1,215 @@
+/*-------------------------------------------
+
+   	Global variables and mixins for SASS
+
+   	Table of Contents:
+
+   	1. Color Variables
+   	2. Font Variables
+   	3. Other Global Variables
+   	4. Basic Mixins
+   	5. Functions
+   	6. Advanced Mixins
+   	7. Media Queries
+
+-------------------------------------------*/
+
+
+
+/* ==========================================================================
+	!  1. Color Variables
+	========================================================================== */
+
+
+		$primary-color: #0084dd;
+		$secondary-color: #4a4a4a;
+		$link_color: $primary-color;
+
+
+/* ==========================================================================
+	!  2. Font Variables
+	========================================================================== */
+
+		$serif: "Times New Roman",serif;
+		$sans-serif: "Helvetica Neue","Helvetica","Arial",sans-serif;
+		$icon: "SSStandard";
+		$icon-social: "SSSocial";
+
+
+/* ==========================================================================
+	!  3. Other Global Variables
+	========================================================================== */
+
+		$em-base: 16px !default;
+		$default-bg: #fff !default;
+		$default-font-color: #222 !default;
+		$default-font-family: $sans-serif;
+		$default-radius: 3px !default;
+
+/* ==========================================================================
+	!  4. Basic Mixins
+
+	!Important:
+	Many mixins that work with vendor prefixes are included with Compass.  For full documentation, view
+	http://compass-style.org/reference/compass/.
+
+	========================================================================== */
+
+
+		// Catch-all for vendors
+		@mixin vendor-prefix($name, $argument) {
+			#{$name}: $argument;
+			-webkit-#{$name}: $argument;
+			-ms-#{$name}: $argument;
+			-moz-#{$name}: $argument;
+			/*   -o-#{$name}: $argument; RIP Opera... */
+		}
+
+		/* Location-specific Radius */
+		@mixin radius-corners($vert, $horz, $radius: $global-radius) {
+			border-#{$vert}-#{$horz}-radius: $radius;
+			-moz-border-radius-#{$vert}#{$horz}: $radius;
+			-webkit-border-#{$vert}-#{$horz}-radius: $radius;
+		}
+
+
+		// Add transitions to elements
+		@mixin single-transition($property:all, $speed:300ms, $ease:ease-out) {
+			-webkit-transition: $property $speed $ease;
+			-moz-transition: $property $speed $ease;
+			transition: $property $speed $ease;
+		}
+
+		// We use this to do clear floats
+		@mixin clearfix() {
+			*zoom:1;
+			&:before, &:after { content: " "; display: table; }
+			&:after { clear: both; }
+		}
+
+/* 		FIX */
+		@mixin letterpress-box {
+			box-shadow: 0 1px 0 #fff;
+			-webkit-box-shadow: 0 1px 0 #fff;
+			-moz-box-shadow: 0 1px 0 #fff;
+		}
+
+		@mixin letterpress-text {
+			text-shadow: 0 1px 0 #fff;
+			-webkit-text-shadow: 0 1px 0 #fff;
+			-moz-text-shadow: 0 1px 0 #fff;
+		}
+
+	// Remove margin or padding
+	@mixin nomargin {
+		margin: 0 0 0 0;
+		padding: 0 0 0 0;
+	}
+
+
+/* ==========================================================================
+	!  5. Formulas
+	========================================================================== */
+
+		// Calculate pixels to ems
+		@function emCalc($pxWidth) {
+			@return $pxWidth / $em-base * 1em;
+		}
+
+		// Creating rems and pixels
+		@function remCalc($pxWidth) {
+			@return $pxWidth / $em-base * 1rem;
+		}
+
+		// Grid Calculation for Percentages
+		@function gridCalc($colNumber, $totalColumns) {
+			@return percentage(($colNumber / $totalColumns));
+		}
+
+
+/* ==========================================================================
+	!  6. Advanced Mixins
+	========================================================================== */
+
+		// Create equalateral triangles
+		@mixin css-triangle($triangle-size, $triangle-color, $triangle-direction) {
+			content: "";
+			display: block;
+			width: 0;
+			height: 0;
+			border: solid $triangle-size;
+			@if ($triangle-direction == top) {
+				border-color: $triangle-color transparent transparent transparent;
+			}
+			@if ($triangle-direction == bottom) {
+				border-color: transparent transparent $triangle-color transparent;
+			}
+			@if ($triangle-direction == left) {
+				border-color: transparent transparent transparent $triangle-color;
+			}
+			@if ($triangle-direction == right) {
+				border-color: transparent $triangle-color transparent transparent;
+			}
+		}
+
+		// Use this to create equal side border radius on elements
+		@mixin side-radius($side, $radius) {
+			@include border-radius(0);
+			@if $side == left {
+				-moz-border-radius-bottomleft: $radius;
+				-moz-border-radius-topleft: $radius;
+				-webkit-border-bottom-left-radius: $radius;
+				-webkit-border-top-left-radius: $radius;
+				border-bottom-left-radius: $radius;
+				border-top-left-radius: $radius;
+			}
+			@else if $side == right {
+				-moz-border-radius-topright: $radius;
+				-moz-border-radius-bottomright: $radius;
+				-webkit-border-top-right-radius: $radius;
+				-webkit-border-bottom-right-radius: $radius;
+				border-top-right-radius: $radius;
+				border-bottom-right-radius: $radius;
+			}
+			@else if $side == top {
+				-moz-border-radius-topright: $radius;
+				-moz-border-radius-topleft: $radius;
+				-webkit-border-top-right-radius: $radius;
+				-webkit-border-top-left-radius: $radius;
+				border-top-right-radius: $radius;
+				border-top-left-radius: $radius;
+			}
+			@else if $side == bottom {
+				-moz-border-radius-bottomright: $radius;
+				-moz-border-radius-bottomleft: $radius;
+				-webkit-border-bottom-right-radius: $radius;
+				-webkit-border-bottom-left-radius: $radius;
+				border-bottom-right-radius: $radius;
+				border-bottom-left-radius: $radius;
+			}
+		}
+
+		// Add box-sizing across browser prefixes
+		@mixin box-sizing($type:border-box) {
+			-moz-box-sizing: $type;
+			-webkit-box-sizing: $type;
+			box-sizing: $type;
+		}
+
+
+/* ==========================================================================
+	!  7. Media Queries
+	========================================================================== */
+
+		$small-screen: emCalc(768px) !default;
+		$medium-screen: emCalc(1280px) !default;
+		$large-screen: emCalc(1440px) !default;
+
+		$screen: "only screen" !default;
+		$small: "only screen and (min-width:"#{$small-screen}")" !default;
+		$medium: "only screen and (min-width:"#{$medium-screen}")" !default;
+		$large: "only screen and (min-width:"#{$large-screen}")" !default;
+		$landscape: "only screen and (orientation: landscape)" !default;
+		$portrait: "only screen and (orientation: portrait)" !default;
+
+
